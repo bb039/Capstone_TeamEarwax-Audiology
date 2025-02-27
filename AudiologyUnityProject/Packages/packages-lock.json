@@ -1,12 +1,13 @@
 {
   "dependencies": {
     "co.haply.inverse": {
-      "version": "file:../../HaplyPackages/co.haply.inverse-3.1.0.tgz",
+      "version": "3.1.0",
       "depth": 0,
-      "source": "local-tarball",
+      "source": "registry",
       "dependencies": {
         "com.unity.xr.core-utils": "2.3.0"
-      }
+      },
+      "url": "https://unitypackages.haply.co"
     },
     "com.unity.ai.navigation": {
       "version": "2.0.6",
