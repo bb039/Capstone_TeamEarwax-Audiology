@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "co.haply.inverse": "file:C:/Users/kxiang/Desktop/Audiology/co.haply.inverse@3.1.0/package",
     "com.unity.ai.navigation": "2.0.6",
     "com.unity.collab-proxy": "2.7.1",
     "com.unity.ide.rider": "3.0.31",
