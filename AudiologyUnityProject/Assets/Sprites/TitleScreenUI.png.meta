@@ -1,12 +1,20 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
+guid: e7cd92ab662fbc44d90e7afe40f097f8
+=======
 guid: 6003b87b2f3ccc64ea8f142c713c0246
+>>>>>>> eb079c83c0135b98ba708e8caa1af2fdd177f5fb
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
     mipMapMode: 0
+<<<<<<< HEAD
+    enableMipMap: 1
+=======
     enableMipMap: 0
+>>>>>>> eb079c83c0135b98ba708e8caa1af2fdd177f5fb
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -37,6 +45,15 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
+<<<<<<< HEAD
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
+  nPOTScale: 1
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 0
+=======
     wrapU: 1
     wrapV: 1
     wrapW: 0
@@ -44,6 +61,7 @@ TextureImporter:
   lightmap: 0
   compressionQuality: 50
   spriteMode: 1
+>>>>>>> eb079c83c0135b98ba708e8caa1af2fdd177f5fb
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -52,9 +70,15 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
+<<<<<<< HEAD
+  alphaIsTransparency: 0
+  spriteTessellationDetail: -1
+  textureType: 0
+=======
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
+>>>>>>> eb079c83c0135b98ba708e8caa1af2fdd177f5fb
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -66,6 +90,9 @@ TextureImporter:
   applyGammaDecoding: 0
   swizzle: 50462976
   cookieLightType: 0
+<<<<<<< HEAD
+  platformSettings: []
+=======
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
@@ -93,6 +120,7 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+>>>>>>> eb079c83c0135b98ba708e8caa1af2fdd177f5fb
   spriteSheet:
     serializedVersion: 2
     sprites: []
@@ -100,7 +128,11 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
+<<<<<<< HEAD
+    spriteID: 
+=======
     spriteID: 5e97eb03825dee720800000000000000
+>>>>>>> eb079c83c0135b98ba708e8caa1af2fdd177f5fb
     internalID: 0
     vertices: []
     indices: 
