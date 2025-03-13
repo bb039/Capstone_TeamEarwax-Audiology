@@ -24,7 +24,7 @@ public class TimerScript : MonoBehaviour
 
             if (elapsedTime >= 10f)
             {
-                isRunning = false;  
+                isRunning = false;
                 SceneManager.LoadScene(endGameScene);
             }
         }
@@ -34,6 +34,16 @@ public class TimerScript : MonoBehaviour
     public void StartTimer()
     {
         isRunning = true;
+    }
+
+    public bool IsTimerRunning()
+    {
+        return isRunning;
+    }
+
+    public float GetElapsedTime()
+    {
+        return elapsedTime;
     }
 
 }

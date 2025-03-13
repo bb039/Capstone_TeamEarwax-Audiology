@@ -22,6 +22,7 @@ public class UserNameInputScript : MonoBehaviour
             submitButton.gameObject.SetActive(false);
 
             timerScript.StartTimer();
+            Time.timeScale = 1;
         }
 
    
