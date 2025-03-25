@@ -9,6 +9,7 @@ public class UserNameInputScript : MonoBehaviour
     [SerializeField] Text resultText;
     [SerializeField] Button submitButton;
     [SerializeField] TimerScript timerScript;
+    [SerializeField] GameObject statsManager;
 
     public void ValidateInput()
     {
@@ -16,8 +17,9 @@ public class UserNameInputScript : MonoBehaviour
 
         if (!string.IsNullOrEmpty(input))
         {
-            resultText.text = input;
-
+            //resultText.text = input;
+            statsManager.GetComponent<StatsManager>().setName(input);
+            resultText.text = statsManager.GetComponent<StatsManager>().getName();
             inputField.gameObject.SetActive(false);
             submitButton.gameObject.SetActive(false);
 
