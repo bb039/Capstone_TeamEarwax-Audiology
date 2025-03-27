@@ -528,6 +528,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timerText: {fileID: 985398449}
   endGameScene: EndScene
+  statsManager: {fileID: 1388335868}
 --- !u!1 &846334618
 GameObject:
   m_ObjectHideFlags: 0
@@ -1497,6 +1498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e1811b18a2c84b40a20a739c3640284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elapsedTime: 0
 --- !u!1 &1409446645
 GameObject:
   m_ObjectHideFlags: 0

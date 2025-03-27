@@ -13,6 +13,8 @@ public class TimerScript : MonoBehaviour
 
     public string endGameScene;
 
+    [SerializeField] GameObject statsManager;
+
     void Update()
     {
         if (isRunning)
@@ -25,6 +27,7 @@ public class TimerScript : MonoBehaviour
             if (elapsedTime >= 10f)
             {
                 isRunning = false;
+                statsManager.GetComponent<StatsManager>().setElapsedTime(elapsedTime);
                 SceneManager.LoadScene(endGameScene);
             }
         }
