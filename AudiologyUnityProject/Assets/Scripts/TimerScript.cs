@@ -28,6 +28,7 @@ public class TimerScript : MonoBehaviour
             {
                 isRunning = false;
                 statsManager.GetComponent<StatsManager>().setElapsedTime(elapsedTime);
+                statsManager.GetComponent<StatsManager>().SaveCurrentRecord();
                 SceneManager.LoadScene(endGameScene);
             }
         }
