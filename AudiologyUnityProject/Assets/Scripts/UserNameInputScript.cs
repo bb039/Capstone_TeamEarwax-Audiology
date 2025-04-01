@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class UserNameInputScript : MonoBehaviour 
 {
     [SerializeField] InputField inputField;
+    //[SerializeField] Text testText;
     [SerializeField] Text resultText;
     [SerializeField] Button submitButton;
     [SerializeField] TimerScript timerScript;
@@ -14,6 +15,7 @@ public class UserNameInputScript : MonoBehaviour
     public void ValidateInput()
     {
         string input = inputField.text;
+        //testText.text = PlayerPrefs.GetString("headType");
 
         if (!string.IsNullOrEmpty(input))
         {
