@@ -21,6 +21,8 @@ public class HeadLoader : MonoBehaviour
         else
         {
             head.SetActive(true);
+            leftHead.SetActive(false);
+            rightHead.SetActive(false);
         }
     }
 }
