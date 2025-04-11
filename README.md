@@ -5,6 +5,12 @@ A virtual reality simulation with a patient’s ear canal for students to practi
 ## How to Setup (to do later)
 
 ## Changelog
+### Version 0.3.0
+- Added settings UI and refined previous UI
+- Started implementation of world space UI for VR functionality
+- File I/O with user's stats being saved after completing the simulation scene
+- Most updates are in the develop branch + head_models branch
+- Because of Haply limitations (broken part), we are unable to work with the device to have it connected with the curette model
 
 ### Version  0.2.0
 - Added VR Functionality
