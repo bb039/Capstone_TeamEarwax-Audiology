@@ -1,25 +1,50 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR;
 
-public class AnimateHandOnInput : MonoBehaviour
+public class HandAnimator : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public InputActionProperty pinchAnimationAction;
-    public InputActionProperty gripAnimationAction;
+    [Header("Input Actions")]
+    [SerializeField] private InputActionProperty gripAction;
+    [SerializeField] private InputActionProperty triggerAction;
 
-    public Animator handAnimator;
-    void Start()
+    [Header("Hand Animator")]
+    [SerializeField] private Animator handAnimator;
+
+    [Header("Smoothing")]
+    [SerializeField] private float smoothSpeed = 5f;
+
+    private float currentGrip;
+    private float currentTrigger;
+
+    void OnEnable()
     {
-        
+        gripAction.action.Enable();
+        triggerAction.action.Enable();
     }
 
-    // Update is called once per frame
+    void OnDisable()
+    {
+        gripAction.action.Disable();
+        triggerAction.action.Disable();
+    }
+
     void Update()
     {
-        float triggerValue = pinchAnimationAction.action.ReadValue<float>();
-        handAnimator.SetFloat("Trigger", triggerValue);
+        if (handAnimator == null)
+            return;
 
-        float gripValue = gripAnimationAction.action.ReadValue<float>();
-        handAnimator.SetFloat("Grip", gripValue);
+        float gripValue = gripAction.action.ReadValue<float>();
+        float triggerValue = triggerAction.action.ReadValue<float>();
+
+        // Smooth the transitions
+        currentGrip = Mathf.Lerp(currentGrip, gripValue, Time.deltaTime * smoothSpeed);
+        currentTrigger = Mathf.Lerp(currentTrigger, triggerValue, Time.deltaTime * smoothSpeed);
+
+        handAnimator.SetFloat("Grip", currentGrip);
+        handAnimator.SetFloat("Trigger", currentTrigger);
+
+        Debug.Log($"Grip: {currentGrip}, Trigger: {currentTrigger}");
     }
 }
