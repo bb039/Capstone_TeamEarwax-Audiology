@@ -990,6 +990,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "New action map",
+            "id": "c81c0884-6449-4c76-9eff-722e73aed058",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "794e978a-6241-49bb-ac69-8f205f9d9e04",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "44b20625-fa75-4806-85e3-a772685a3cb9",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
