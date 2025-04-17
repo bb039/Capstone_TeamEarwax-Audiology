@@ -28,6 +28,5 @@ public class SettingsScript : MonoBehaviour
     {
         PlayerPrefs.SetString("headType", "Right");
         CanalText.text = $"Canal Type: 3";
-        //CanalText.text = $"Canal Type: {PlayerPrefs.GetString("headType")}";
     }
 }
