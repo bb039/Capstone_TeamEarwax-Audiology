@@ -5,9 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class StatsSceneScript : MonoBehaviour
 {
-    public GameObject textPrefab;
     public Transform contentParent;
-    //public Text statsText;
+    public GameObject statEntryRowPrefab;
     private string filePath;
 
     public string mainMenuScene;
@@ -18,44 +17,32 @@ public class StatsSceneScript : MonoBehaviour
         LoadStats();
     }
 
-    private void LoadStats()
+    void LoadStats()
     {
-        if (File.Exists(filePath))
-        {
-            string json = File.ReadAllText(filePath);
-            Debug.Log("Loaded JSON: " + json);
-            StatsData statsData = JsonUtility.FromJson<StatsData>(json);
+        string path = Application.persistentDataPath + "/stats.json";
 
-            if (statsData != null && statsData.playerNames.Count > 0)
-            {
-                for (int i = 0; i < statsData.playerNames.Count; i++)
-                {
-                    GameObject entry = Instantiate(textPrefab, contentParent);
-                    entry.SetActive(true);
+        if (!File.Exists(path)) return;
 
-                    string formattedTime = FormatTime(statsData.times[i]);
-                    entry.GetComponent<Text>().text = $"{statsData.playerNames[i]} - {formattedTime}";
-                }
-            }
-            else
-            {
-                Debug.Log("StatsData is empty.");
-                AddEmptyEntry("No stats recorded yet.");
-            }
-        }
-        else
+        string json = File.ReadAllText(path);
+        StatsData statsData = JsonUtility.FromJson<StatsData>(json);
+
+        for (int i = 0; i < statsData.playerNames.Count; i++)
         {
-            Debug.Log("Stats file not found: " + filePath);
-            AddEmptyEntry("No stats recorded yet.");
+            GameObject row = Instantiate(statEntryRowPrefab, contentParent);
+
+            string player = statsData.playerNames[i];
+            string time = FormatTime(statsData.times[i]);
+
+            Debug.Log($"Created entry: {player} - {time}");
+
+
+            row.transform.Find("PlayerNameText").GetComponent<Text>().text = player;
+            row.transform.Find("TimeText").GetComponent<Text>().text = time;
+
+            row.SetActive(true);
         }
     }
 
-    private void AddEmptyEntry(string message)
-    {
-        GameObject entry = Instantiate(textPrefab, contentParent);
-        entry.SetActive(true);
-        entry.GetComponent<Text>().text = message;
-    }
 
     private string FormatTime(float time)
     {
