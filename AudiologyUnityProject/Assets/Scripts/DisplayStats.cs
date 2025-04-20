@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class StatsSceneScript : MonoBehaviour
 {
-    public Text statsText;
+    public GameObject textPrefab;
+    public Transform contentParent;
+    //public Text statsText;
     private string filePath;
 
     public string mainMenuScene;
@@ -26,24 +28,33 @@ public class StatsSceneScript : MonoBehaviour
 
             if (statsData != null && statsData.playerNames.Count > 0)
             {
-                statsText.text = "Player Stats:\n";
                 for (int i = 0; i < statsData.playerNames.Count; i++)
                 {
+                    GameObject entry = Instantiate(textPrefab, contentParent);
+                    entry.SetActive(true);
+
                     string formattedTime = FormatTime(statsData.times[i]);
-                    statsText.text += $"{statsData.playerNames[i]} - {formattedTime}\n";
+                    entry.GetComponent<Text>().text = $"{statsData.playerNames[i]} - {formattedTime}";
                 }
             }
             else
             {
-                statsText.text = "No stats recorded yet.";
                 Debug.Log("StatsData is empty.");
+                AddEmptyEntry("No stats recorded yet.");
             }
         }
         else
         {
-            statsText.text = "No stats recorded yet.";
             Debug.Log("Stats file not found: " + filePath);
+            AddEmptyEntry("No stats recorded yet.");
         }
+    }
+
+    private void AddEmptyEntry(string message)
+    {
+        GameObject entry = Instantiate(textPrefab, contentParent);
+        entry.SetActive(true);
+        entry.GetComponent<Text>().text = message;
     }
 
     private string FormatTime(float time)
