@@ -9,14 +9,53 @@ public class SpawnSphereScript : MonoBehaviour
     void Start()
     {
 
-        float radius = managerObject.localScale.x * 0.5f - 0.1f; 
+        float radius = managerObject.localScale.x * 0.5f - 0.001f; 
 
         for (int i = 0; i < amountToSpawn; i++)
         {
-            Vector3 spawnPos = GetRandomEdgePosition(radius);
-            //Vector3 spawnPos = GetRandomPosition(radius);
-            Instantiate(spherePrefab, spawnPos, Quaternion.identity);
+            Vector3 spawnPos = new Vector3(0, 0, 0);
+            int random = Random.Range(0, 2);
+            if(random == 1)
+            {
+                spawnPos = GetRandomEdgePosition(radius);
+            }
+            else
+            {
+                spawnPos = GetRandomEdgePosition(radius);
+
+            }
+
+                //Vector3 spawnPos = GetRandomPosition(radius);
+                Instantiate(spherePrefab, spawnPos, Quaternion.identity);
         }
+    }
+
+    Vector3 GetRandomBottomEdgePosition(float radius)
+    {
+        float height = managerObject.localScale.y;
+        float angle = Random.Range(0f, 2f * Mathf.PI);
+        float x = Mathf.Cos(angle) * radius;
+        //float y = Mathf.Sin(angle) * radius;
+        float y = Random.Range(-height / 2, -height / 4);
+        //float z = Mathf.Sin(angle) * radius;
+        float z = Random.Range((float)(-managerObject.localScale.z + 0.2), (float)(managerObject.localScale.z - 0.2));
+        Vector3 localPos = new Vector3(x, y, z);
+
+        return managerObject.position + localPos;
+    }
+
+    Vector3 GetRandomTopEdgePosition(float radius)
+    {
+        float height = managerObject.localScale.y;
+        float angle = Random.Range(0f, 2f * Mathf.PI);
+        float x = Mathf.Cos(angle) * radius;
+        //float y = Mathf.Sin(angle) * radius;
+        float y = Random.Range(height / 4, height/2);
+        //float z = Mathf.Sin(angle) * radius;
+        float z = Random.Range((float)(-managerObject.localScale.z + 0.2), (float)(managerObject.localScale.z - 0.2));
+        Vector3 localPos = new Vector3(x, y, z);
+
+        return managerObject.position + localPos;
     }
 
     Vector3 GetRandomEdgePosition(float radius)
@@ -24,8 +63,8 @@ public class SpawnSphereScript : MonoBehaviour
         float height = managerObject.localScale.y;
         float angle = Random.Range(0f, 2f * Mathf.PI);
         float x = Mathf.Cos(angle) * radius;
-        //float y = Mathf.Sin(angle) * radius;
-        float y = Random.Range(-height / 2, 0);
+        float y = Mathf.Sin(angle) * radius;
+        //float y = Random.Range(height / 4, height / 2);
         //float z = Mathf.Sin(angle) * radius;
         float z = Random.Range((float)(-managerObject.localScale.z + 0.2), (float)(managerObject.localScale.z - 0.2));
         Vector3 localPos = new Vector3(x, y, z);
