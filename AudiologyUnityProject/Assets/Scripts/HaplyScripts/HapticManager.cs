@@ -9,6 +9,7 @@ public class HapticManager : MonoBehaviour
 
     private readonly List<CubeForceFeedback> cubes = new();
     private readonly List<SphereForceFeedback> spheres = new();
+    private readonly List<DangerZone> dangerZones = new();
 
     private void OnEnable()
     {
@@ -43,6 +44,12 @@ public class HapticManager : MonoBehaviour
             spheres.Add(sphere);
     }
 
+    public void RegisterDangerZone(DangerZone zone)
+    {
+        if (!dangerZones.Contains(zone))
+            dangerZones.Add(zone);
+    }
+
     /// <summary>
     /// Called whenever the device updates. It gathers all active force zones and combines their effects.
     /// </summary>
@@ -53,6 +60,8 @@ public class HapticManager : MonoBehaviour
         float radius = args.DeviceController.Cursor.Radius;
 
         Vector3 totalForce = Vector3.zero;
+
+        float maxDanger = 0f;
 
         // Gather forces from cubes
         foreach (var cube in cubes)
@@ -66,7 +75,14 @@ public class HapticManager : MonoBehaviour
             totalForce += sphere.CalculateForce(pos, vel, radius);
         }
 
+        foreach (var zone in dangerZones)
+        {
+            float penetration = zone.GetPenetrationDepth(pos, radius);
+            maxDanger = Mathf.Max(maxDanger, zone.NormalizedPenetration());
+        }
+
         // Apply the combined force to the device
         args.DeviceController.SetCursorLocalForce(totalForce);
+        DangerOverlayUI.SetIntensity(maxDanger);
     }
 }
