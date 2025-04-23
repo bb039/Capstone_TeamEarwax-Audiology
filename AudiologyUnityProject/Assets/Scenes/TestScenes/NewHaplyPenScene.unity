@@ -717,6 +717,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stiffness: 300
   damping: 1
+  enableColorFeedback: 0
+  minForceColor: {r: 1, g: 1, b: 1, a: 1}
+  maxForceColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!65 &1217440718
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1574,6 +1577,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stiffness: 300
   damping: 1
+  enableColorFeedback: 1
+  minForceColor: {r: 1, g: 1, b: 1, a: 1}
+  maxForceColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!65 &2083216744
 BoxCollider:
   m_ObjectHideFlags: 0
