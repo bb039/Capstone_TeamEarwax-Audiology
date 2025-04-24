@@ -7,6 +7,7 @@ public class VRUserNameInputScript : MonoBehaviour
 {
     [SerializeField] InputField inputField;
     [SerializeField] TimerScript timerScript;
+    [SerializeField] ClockScript clockScript;
     [SerializeField] GameObject statsManager;
     [SerializeField] GameObject keyboardUI;
     [SerializeField] GameObject timerUI;
@@ -24,6 +25,7 @@ public class VRUserNameInputScript : MonoBehaviour
                 timerUI.gameObject.SetActive(true);
 
                 timerScript.StartTimer();
+                clockScript.StartClock();
                 Time.timeScale = 1;
             }
             else

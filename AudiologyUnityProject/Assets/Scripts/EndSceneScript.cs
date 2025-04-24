@@ -22,7 +22,7 @@ public class EndSceneScript : MonoBehaviour
             int seconds = Mathf.FloorToInt(elapsedTime % 60);
             string formattedTime = string.Format("{0:00}:{1:00}", minutes, seconds);
 
-            introText.text = $"Congratulations {name}! \r\nHere is how you did:";
+            introText.text = $"Wax On, Wax Gone!\r\nHere's how you did, {name}:";
             timeText.text = $"Time Taken: {formattedTime}";
         }
 
