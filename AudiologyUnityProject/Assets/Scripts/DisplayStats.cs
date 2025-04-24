@@ -2,49 +2,95 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using UnityEngine.SceneManagement;
+using System;
+using System.Collections.Generic;
 
 public class StatsSceneScript : MonoBehaviour
 {
-    public Text statsText;
-    private string filePath;
+    public Transform contentParent;
+    public GameObject statEntryRowPrefab;
+    public InputField searchInput;
+    public Dropdown sortDropdown;
 
+    private string filePath;
     public string mainMenuScene;
+
+    private enum SortMode { LastCompleted, Fastest, Slowest }
+    private SortMode currentSortMode = SortMode.LastCompleted;
 
     void Start()
     {
         filePath = Application.persistentDataPath + "/stats.json";
+
+        if (sortDropdown != null)
+        {
+            sortDropdown.onValueChanged.RemoveAllListeners();
+            sortDropdown.onValueChanged.AddListener(OnSortOptionChanged);
+        }
+
         LoadStats();
     }
 
-    private void LoadStats()
+    public void OnSearchButtonPressed()
     {
-        if (File.Exists(filePath))
-        {
-            string json = File.ReadAllText(filePath);
-            Debug.Log("Loaded JSON: " + json);
-            StatsData statsData = JsonUtility.FromJson<StatsData>(json);
+        string input = searchInput.text;
+        LoadStats(input);
+    }
 
-            if (statsData != null && statsData.playerNames.Count > 0)
-            {
-                statsText.text = "Player Stats:\n";
-                for (int i = 0; i < statsData.playerNames.Count; i++)
-                {
-                    string formattedTime = FormatTime(statsData.times[i]);
-                    statsText.text += $"{statsData.playerNames[i]} - {formattedTime}\n";
-                }
-            }
-            else
-            {
-                statsText.text = "No stats recorded yet.";
-                Debug.Log("StatsData is empty.");
-            }
-        }
-        else
+    void LoadStats(string nameFilter = "")
+    {
+        foreach (Transform child in contentParent)
+            Destroy(child.gameObject);
+
+        if (!File.Exists(filePath)) return;
+
+        string json = File.ReadAllText(filePath);
+        StatsData statsData = JsonUtility.FromJson<StatsData>(json);
+
+        List<(string name, float time)> combined = new List<(string, float)>();
+
+        for (int i = 0; i < statsData.playerNames.Count; i++)
         {
-            statsText.text = "No stats recorded yet.";
-            Debug.Log("Stats file not found: " + filePath);
+            string player = statsData.playerNames[i];
+            float time = statsData.times[i];
+
+            if (!string.IsNullOrEmpty(nameFilter) &&
+                !player.ToLower().Contains(nameFilter.ToLower()))
+            {
+                continue;
+            }
+
+            combined.Add((player, time));
+        }
+
+        switch (currentSortMode)
+        {
+            case SortMode.Fastest:
+                combined.Sort((a, b) => a.time.CompareTo(b.time));
+                break;
+            case SortMode.Slowest:
+                combined.Sort((a, b) => b.time.CompareTo(a.time));
+                break;
+            case SortMode.LastCompleted:
+                break;
+        }
+
+        foreach (var (player, time) in combined)
+        {
+            GameObject row = Instantiate(statEntryRowPrefab, contentParent);
+            row.transform.Find("PlayerNameText").GetComponent<Text>().text = player;
+            row.transform.Find("TimeText").GetComponent<Text>().text = FormatTime(time);
+            row.SetActive(true);
         }
     }
+
+    public void OnSortOptionChanged(int index)
+    {
+        Debug.Log("Dropdown changed: " + index);
+        currentSortMode = (SortMode)index;
+        LoadStats(searchInput.text);
+    }
+
 
     private string FormatTime(float time)
     {

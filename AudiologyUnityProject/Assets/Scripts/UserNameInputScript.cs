@@ -11,6 +11,8 @@ public class UserNameInputScript : MonoBehaviour
     [SerializeField] Button submitButton;
     [SerializeField] TimerScript timerScript;
     [SerializeField] GameObject statsManager;
+    [SerializeField] ClockScript clockScript;
+    
 
     public void ValidateInput()
     {
@@ -27,6 +29,7 @@ public class UserNameInputScript : MonoBehaviour
                 inputField.gameObject.SetActive(false);
                 submitButton.gameObject.SetActive(false);
 
+                clockScript.StartClock();
                 timerScript.StartTimer();
                 Time.timeScale = 1;
             }
