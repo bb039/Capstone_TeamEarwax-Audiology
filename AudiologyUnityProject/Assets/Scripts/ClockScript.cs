@@ -14,6 +14,19 @@ public class ClockScript : MonoBehaviour
     public string endGameScene;
 
     [SerializeField] private GameObject statsManager;
+    
+    public string startGameScene;
+
+    public void StartGame()
+    {
+        SceneManager.LoadScene(startGameScene);
+    }
+
+    public void ResetButton()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1;
+    }
 
     void Update()
     {
