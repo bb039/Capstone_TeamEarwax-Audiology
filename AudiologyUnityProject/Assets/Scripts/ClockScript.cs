@@ -7,6 +7,7 @@ using TMPro;
 public class ClockScript : MonoBehaviour
 {
     [SerializeField] private TMP_Text timerText;
+    [SerializeField] private TMP_Text pauseText;
     private float elapsedTime;
     private bool isRunning = false;
 
@@ -18,19 +19,18 @@ public class ClockScript : MonoBehaviour
     {
         if (isRunning)
         {
+            pauseText.text = "Pause";
             elapsedTime += Time.deltaTime;
 
             int minutes = Mathf.FloorToInt(elapsedTime / 60);
             int seconds = Mathf.FloorToInt(elapsedTime % 60);
             timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
 
-            if (elapsedTime >= 10f)
-            {
-                isRunning = false;
-                statsManager.GetComponent<StatsManager>().setElapsedTime(elapsedTime);
-                statsManager.GetComponent<StatsManager>().SaveCurrentRecord();
-                SceneManager.LoadScene(endGameScene);
-            }
+
+            statsManager.GetComponent<StatsManager>().setElapsedTime(elapsedTime);
+
+
+    
         }
     }
 
@@ -47,5 +47,31 @@ public class ClockScript : MonoBehaviour
     public float GetElapsedTime()
     {
         return elapsedTime;
+    }
+
+    public void ExitSimulation()
+    {
+        Debug.Log("Exiting simulation");
+        isRunning = false;
+        statsManager.GetComponent<StatsManager>().SaveCurrentRecord();
+        SceneManager.LoadScene(endGameScene);
+    }
+
+    public void PauseClock()
+    {
+        isRunning = !isRunning;
+
+        if (isRunning)
+        {
+            Debug.Log("Clock resumed");
+            pauseText.text = "Pause";
+            pauseText.color = Color.green;
+        }
+        else
+        {
+            Debug.Log("Clock paused");
+            pauseText.text = "Resume";
+            pauseText.color = Color.yellow;
+        }
     }
 }
