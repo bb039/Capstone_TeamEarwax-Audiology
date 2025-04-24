@@ -8,6 +8,7 @@ public class ClockScript : MonoBehaviour
 {
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private TMP_Text pauseText;
+    [SerializeField] private TMP_Text pauseButtonText;
     private float elapsedTime;
     private bool isRunning = false;
 
@@ -78,12 +79,14 @@ public class ClockScript : MonoBehaviour
         {
             Debug.Log("Clock resumed");
             pauseText.text = "Pause";
+            pauseButtonText.text = "Pause";
             pauseText.color = Color.green;
         }
         else
         {
             Debug.Log("Clock paused");
             pauseText.text = "Resume";
+            pauseButtonText.text = "Resume";
             pauseText.color = Color.yellow;
         }
     }
