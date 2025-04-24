@@ -1,6 +1,8 @@
 using System.Collections;
 using NUnit.Framework;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
 public class NewTestScript
@@ -36,4 +38,23 @@ public class NewTestScript
 
         yield return null;
     }
+
+    //[UnityTest]
+    //public IEnumerator CheckSceneLoading()
+    //{
+
+    //    string endScene = "EndScene";
+
+    //    EditorSceneManager.OpenScene(endScene);
+
+        
+       
+
+    //    // Use the Assert class to test conditions.
+    //    // Use yield to skip a frame.
+    //    Assert.AreEqual(EditorSceneManager.GetSceneByName("endScene").isLoaded, true);
+
+
+    //    yield return null;
+    //}
 }
