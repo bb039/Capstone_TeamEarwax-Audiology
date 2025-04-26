@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro; // if you are using TextMeshPro
 
 public class CubeForceFeedback : MonoBehaviour
 {
@@ -10,6 +11,10 @@ public class CubeForceFeedback : MonoBehaviour
     public bool enableColorFeedback = false;
     public Color minForceColor = Color.white;
     public Color maxForceColor = Color.red;
+
+    [Header("Pressure Warning UI")]
+    public TextMeshProUGUI pressureWarningText; 
+    public float pressureThreshold = 0.01f; 
 
     private Vector3 _cubePosition;
     private Vector3 _cubeSize;
@@ -60,6 +65,14 @@ public class CubeForceFeedback : MonoBehaviour
         {
             float normalized = Mathf.Clamp01(_penetration / 0.01f); // tweak denominator for sensitivity
             _renderer.material.color = Color.Lerp(minForceColor, maxForceColor, normalized);
+        }
+
+        if (pressureWarningText != null)
+        {
+            if (_penetration > pressureThreshold)
+                pressureWarningText.gameObject.SetActive(true);
+            else
+                pressureWarningText.gameObject.SetActive(false);
         }
     }
 }
