@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro; // if you are using TextMeshPro
+using TMPro;
 
 public class CubeForceFeedback : MonoBehaviour
 {
@@ -7,19 +7,17 @@ public class CubeForceFeedback : MonoBehaviour
     [Range(0, 800)] public float stiffness = 300f;
     [Range(0, 3)] public float damping = 1f;
 
+    [Header("Warning Settings")]
+    public string warningMessage;
+
     [Header("Visual Feedback")]
     public bool enableColorFeedback = false;
     public Color minForceColor = Color.white;
     public Color maxForceColor = Color.red;
 
-    [Header("Pressure Warning UI")]
-    public TextMeshProUGUI pressureWarningText; 
-    public float pressureThreshold = 0.01f; 
-
     private Vector3 _cubePosition;
     private Vector3 _cubeSize;
     private Renderer _renderer;
-
     private float _penetration = 0f;
 
     private void Awake()
@@ -28,7 +26,7 @@ public class CubeForceFeedback : MonoBehaviour
         _cubeSize = transform.lossyScale;
         _renderer = GetComponent<Renderer>();
 
-        FindObjectOfType<HapticManager>().RegisterCube(this);
+        FindFirstObjectByType<HapticManager>().RegisterCube(this);
     }
 
     public Vector3 CalculateForce(Vector3 cursorPosition, Vector3 cursorVelocity, float cursorRadius)
@@ -59,20 +57,17 @@ public class CubeForceFeedback : MonoBehaviour
         return force;
     }
 
+    public float NormalizedPenetration()
+    {
+        return Mathf.Clamp01(_penetration / 0.01f);
+    }
+
     private void Update()
     {
         if (enableColorFeedback && _renderer != null)
         {
-            float normalized = Mathf.Clamp01(_penetration / 0.01f); // tweak denominator for sensitivity
+            float normalized = Mathf.Clamp01(_penetration / 0.01f);
             _renderer.material.color = Color.Lerp(minForceColor, maxForceColor, normalized);
-        }
-
-        if (pressureWarningText != null)
-        {
-            if (_penetration > pressureThreshold)
-                pressureWarningText.gameObject.SetActive(true);
-            else
-                pressureWarningText.gameObject.SetActive(false);
         }
     }
 }

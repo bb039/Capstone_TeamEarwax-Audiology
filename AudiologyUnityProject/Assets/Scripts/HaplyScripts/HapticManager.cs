@@ -10,6 +10,7 @@ public class HapticManager : MonoBehaviour
     private readonly List<CubeForceFeedback> cubes = new();
     private readonly List<SphereForceFeedback> spheres = new();
     private readonly List<DangerZone> dangerZones = new();
+    private readonly List<CurvedTubeForceFeedback> curvedTubes = new();
 
     private void OnEnable()
     {
@@ -23,21 +24,16 @@ public class HapticManager : MonoBehaviour
 
     private void OnDisable()
     {
-        inverse3.DeviceStateChanged -= OnDeviceStateChanged;
+        if (inverse3 != null)
+            inverse3.DeviceStateChanged -= OnDeviceStateChanged;
     }
 
-    /// <summary>
-    /// Called by each cube to register itself for haptic interaction.
-    /// </summary>
     public void RegisterCube(CubeForceFeedback cube)
     {
         if (!cubes.Contains(cube))
             cubes.Add(cube);
     }
 
-    /// <summary>
-    /// Called by each sphere to register itself for haptic interaction.
-    /// </summary>
     public void RegisterSphere(SphereForceFeedback sphere)
     {
         if (!spheres.Contains(sphere))
@@ -50,39 +46,61 @@ public class HapticManager : MonoBehaviour
             dangerZones.Add(zone);
     }
 
-    /// <summary>
-    /// Called whenever the device updates. It gathers all active force zones and combines their effects.
-    /// </summary>
-    private void OnDeviceStateChanged(object sender, Inverse3EventArgs args)
+    public void RegisterTube(CurvedTubeForceFeedback tube)
+    {
+        if (!curvedTubes.Contains(tube))
+            curvedTubes.Add(tube);
+    }
+
+    void OnDeviceStateChanged(object sender, Inverse3EventArgs args)
     {
         Vector3 pos = args.DeviceController.CursorLocalPosition;
         Vector3 vel = args.DeviceController.CursorLocalVelocity;
         float radius = args.DeviceController.Cursor.Radius;
 
         Vector3 totalForce = Vector3.zero;
-
         float maxDanger = 0f;
+        string warningMessage = "";
 
-        // Gather forces from cubes
+        // Check cubes
         foreach (var cube in cubes)
         {
             totalForce += cube.CalculateForce(pos, vel, radius);
+
+            float cubeDanger = cube.NormalizedPenetration();
+            if (cubeDanger > maxDanger)
+            {
+                maxDanger = cubeDanger;
+                warningMessage = cube.warningMessage;
+            }
         }
 
-        // Gather forces from spheres
+        // Check spheres (optional)
         foreach (var sphere in spheres)
         {
             totalForce += sphere.CalculateForce(pos, vel, radius);
         }
 
+        // Check danger zones
         foreach (var zone in dangerZones)
         {
             float penetration = zone.GetPenetrationDepth(pos, radius);
-            maxDanger = Mathf.Max(maxDanger, zone.NormalizedPenetration());
+            float zoneDanger = zone.NormalizedPenetration();
+            if (zoneDanger > maxDanger)
+            {
+                maxDanger = zoneDanger;
+                warningMessage = zone.warningMessage;
+            }
         }
 
-        // Apply the combined force to the device
+        // Check tubes
+        foreach (var tube in curvedTubes)
+        {
+            totalForce += tube.CalculateForce(pos, vel, radius);
+        }
+
         args.DeviceController.SetCursorLocalForce(totalForce);
-        DangerOverlayUI.SetIntensity(maxDanger);
+
+        DangerOverlayUI.SetIntensity(maxDanger, warningMessage);
     }
 }

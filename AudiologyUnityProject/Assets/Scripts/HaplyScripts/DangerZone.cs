@@ -2,17 +2,18 @@ using UnityEngine;
 
 public class DangerZone : MonoBehaviour
 {
-    public float dangerRadius = 0.01f;  // Max depth before full warning effect
+    public float dangerRadius = 0.01f;
+    public string warningMessage;
+
     private Vector3 _cubePosition;
     private Vector3 _cubeSize;
-
     private float _penetration = 0f;
 
     private void Awake()
     {
         _cubePosition = transform.position;
         _cubeSize = transform.lossyScale;
-        FindObjectOfType<HapticManager>().RegisterDangerZone(this);
+        FindFirstObjectByType<HapticManager>().RegisterDangerZone(this);
     }
 
     public float GetPenetrationDepth(Vector3 cursorPosition, float cursorRadius)

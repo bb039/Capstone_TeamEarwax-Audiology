@@ -12,21 +12,32 @@ public class DangerOverlayUI : MonoBehaviour
 
     private float _targetAlpha = 0f;
     private float _currentAlpha = 0f;
+    private string _pendingMessage = "";
 
     private void Awake()
     {
         Instance = this;
 
-        // Hide text at start
         if (warningText != null)
+        {
             warningText.alpha = 0f;
+            warningText.text = "";  // Completely empty at start
+        }
+
+        if (overlayImage != null)
+        {
+            Color clearColor = dangerColor;
+            clearColor.a = 0f;
+            overlayImage.color = clearColor;
+        }
     }
 
-    public static void SetIntensity(float normalized)
+    public static void SetIntensity(float normalized, string message)
     {
         if (Instance == null) return;
 
         Instance._targetAlpha = Mathf.Clamp01(normalized);
+        Instance._pendingMessage = message; // just save the message, do NOT touch UI here
     }
 
     private void Update()
@@ -35,12 +46,21 @@ public class DangerOverlayUI : MonoBehaviour
 
         _currentAlpha = Mathf.Lerp(_currentAlpha, _targetAlpha, Time.deltaTime * 10f);
 
-        // Vignette
+        // Update vignette transparency
         Color newColor = dangerColor;
         newColor.a = Mathf.Lerp(0f, dangerColor.a, _currentAlpha);
         overlayImage.color = newColor;
 
-        // Text fade in/out
-        warningText.alpha = Mathf.Clamp01(_currentAlpha * 2f); // Text fades faster
+        // Update warning text content and alpha safely
+        if (_currentAlpha > 0.01f)
+        {
+            warningText.text = _pendingMessage;  // now we set it safely here
+            warningText.alpha = Mathf.Clamp01(_currentAlpha * 2f);
+        }
+        else
+        {
+            warningText.text = "";
+            warningText.alpha = 0f;
+        }
     }
 }
