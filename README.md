@@ -5,6 +5,12 @@ A virtual reality simulation with a patient’s ear canal for students to practi
 ## How to Setup (to do later)
 
 ## Changelog
+### Version 0.4.0
+- Finished up scene layout (timer, buttons, XR rig)
+- Polished UI with VR capabilities, completed switch to world space UI
+- Started cerumen functionality in spawn_test branch
+- Fixed Haply device and started testing physics and interactibility
+- Code cleanup
 ### Version 0.3.0
 - Added settings UI and refined previous UI
 - Started implementation of world space UI for VR functionality
