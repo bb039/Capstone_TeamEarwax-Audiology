@@ -37,7 +37,7 @@ public class DangerOverlayUI : MonoBehaviour
         if (Instance == null) return;
 
         Instance._targetAlpha = Mathf.Clamp01(normalized);
-        Instance._pendingMessage = message; // just save the message, do NOT touch UI here
+        Instance._pendingMessage = message; 
     }
 
     private void Update()
@@ -54,7 +54,7 @@ public class DangerOverlayUI : MonoBehaviour
         // Update warning text content and alpha safely
         if (_currentAlpha > 0.01f)
         {
-            warningText.text = _pendingMessage;  // now we set it safely here
+            warningText.text = _pendingMessage;  
             warningText.alpha = Mathf.Clamp01(_currentAlpha * 2f);
         }
         else

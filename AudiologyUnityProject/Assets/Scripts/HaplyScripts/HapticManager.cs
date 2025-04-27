@@ -71,7 +71,6 @@ public class HapticManager : MonoBehaviour
         float maxDanger = 0f;
         string warningMessage = "";
 
-        // Check cubes
         foreach (var cube in cubes)
         {
             totalForce += cube.CalculateForce(pos, vel, radius);
@@ -84,13 +83,11 @@ public class HapticManager : MonoBehaviour
             }
         }
 
-        // Check spheres (optional)
         foreach (var sphere in spheres)
         {
             totalForce += sphere.CalculateForce(pos, vel, radius);
         }
 
-        // Check danger zones
         foreach (var zone in dangerZones)
         {
             float penetration = zone.GetPenetrationDepth(pos, radius);
@@ -102,13 +99,11 @@ public class HapticManager : MonoBehaviour
             }
         }
 
-        // Check tubes
         foreach (var tube in curvedTubes)
         {
             totalForce += tube.CalculateForce(pos, vel, radius);
         }
 
-        // Check moving spheres
         foreach (var sphere in movingSpheres)
         {
             totalForce += sphere.CalculateForce(pos, vel, radius);
