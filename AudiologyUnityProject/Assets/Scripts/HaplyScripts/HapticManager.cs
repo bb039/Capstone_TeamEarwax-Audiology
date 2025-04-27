@@ -11,6 +11,8 @@ public class HapticManager : MonoBehaviour
     private readonly List<SphereForceFeedback> spheres = new();
     private readonly List<DangerZone> dangerZones = new();
     private readonly List<CurvedTubeForceFeedback> curvedTubes = new();
+    private readonly List<MovingSphere> movingSpheres = new();
+
 
     private void OnEnable()
     {
@@ -51,6 +53,13 @@ public class HapticManager : MonoBehaviour
         if (!curvedTubes.Contains(tube))
             curvedTubes.Add(tube);
     }
+
+    public void RegisterMovingSphere(MovingSphere sphere)
+    {
+        if (!movingSpheres.Contains(sphere))
+            movingSpheres.Add(sphere);
+    }
+
 
     void OnDeviceStateChanged(object sender, Inverse3EventArgs args)
     {
@@ -98,6 +107,13 @@ public class HapticManager : MonoBehaviour
         {
             totalForce += tube.CalculateForce(pos, vel, radius);
         }
+
+        // Check moving spheres
+        foreach (var sphere in movingSpheres)
+        {
+            totalForce += sphere.CalculateForce(pos, vel, radius);
+        }
+
 
         args.DeviceController.SetCursorLocalForce(totalForce);
 
