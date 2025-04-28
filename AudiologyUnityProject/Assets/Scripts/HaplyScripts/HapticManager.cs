@@ -13,6 +13,8 @@ public class HapticManager : MonoBehaviour
     private readonly List<CurvedTubeForceFeedback> curvedTubes = new();
     private readonly List<MovingSphere> movingSpheres = new();
     private readonly List<PlaneForceFeedback> planes = new();
+    private readonly List<CuretteHapticTrigger> curetteTriggers = new();
+
 
     private void OnEnable()
     {
@@ -65,6 +67,13 @@ public class HapticManager : MonoBehaviour
         if (!planes.Contains(plane))
             planes.Add(plane);
     }
+
+    public void RegisterCuretteTrigger(CuretteHapticTrigger trigger)
+    {
+        if (!curetteTriggers.Contains(trigger))
+            curetteTriggers.Add(trigger);
+    }
+
 
 
     void OnDeviceStateChanged(object sender, Inverse3EventArgs args)
@@ -119,6 +128,15 @@ public class HapticManager : MonoBehaviour
         {
             totalForce += plane.CalculateForce(pos, vel, radius);
         }
+
+        foreach (var trigger in curetteTriggers)
+        {
+            if (trigger.isTouchingCube)
+            {
+                totalForce += trigger.CalculateForce(pos, vel, radius);
+            }
+        }
+
 
         args.DeviceController.SetCursorLocalForce(totalForce);
 
