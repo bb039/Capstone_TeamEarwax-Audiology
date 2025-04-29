@@ -271,7 +271,6 @@ MonoBehaviour:
   timerText: {fileID: 11301254}
   pauseText: {fileID: 867512113}
   endGameScene: EndScene
-  statsManager: {fileID: 1388335868}
   startGameScene: IntroScene
 --- !u!1 &91346929
 GameObject:
@@ -1259,7 +1258,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 267818925173742095, guid: 7012344b92345954fbc417e4ca2f0fa5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.30377787
+      value: -0.3178
       objectReference: {fileID: 0}
     - target: {fileID: 267818925173742095, guid: 7012344b92345954fbc417e4ca2f0fa5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3425,7 +3424,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -20, z: -90}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.09008079, y: -0.12114748}
+  m_AnchoredPosition: {x: 0.0901, y: -0.1568}
   m_SizeDelta: {x: 800, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1360031190
@@ -5541,7 +5540,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1809855187
 MonoBehaviour:
