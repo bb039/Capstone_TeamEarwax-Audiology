@@ -11,7 +11,9 @@ public class EndSceneScript : MonoBehaviour
     
     private void Start()
     {
-        GameObject statsManager = GameObject.Find("StatsManager");
+        StatsManager[] allManagers = FindObjectsByType<StatsManager>(FindObjectsSortMode.None);
+        StatsManager latestManager = allManagers[allManagers.Length - 1];
+        GameObject statsManager = latestManager.gameObject;
 
         if (statsManager != null )
         {
