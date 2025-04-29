@@ -1058,8 +1058,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 85}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 160, y: 105}
+  m_SizeDelta: {x: 140, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &702825759
 MonoBehaviour:
@@ -1464,7 +1464,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Exit
+  m_text: 'End
 
 '
   m_isRightToLeft: 0
@@ -2555,9 +2555,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 94416959975487162, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: F
+      objectReference: {fileID: 0}
+    - target: {fileID: 318458898105129552, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: KButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 375315286318056243, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: JButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 517610653178448329, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: PButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 605921368916257395, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: P
+      objectReference: {fileID: 0}
     - target: {fileID: 718757264630706058, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 837845041503002049, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: UButton
       objectReference: {fileID: 0}
     - target: {fileID: 1530310430747502676, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2599,9 +2623,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1636960136791813025, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: GButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 1855429151312759869, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: SButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856784182522316320, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: IButton
+      objectReference: {fileID: 0}
     - target: {fileID: 1873731762180840027, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2012697950002981866, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: FButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 2036008625457450325, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: D
       objectReference: {fileID: 0}
     - target: {fileID: 2434056698723818156, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
       propertyPath: m_IsActive
@@ -2615,17 +2659,181 @@ PrefabInstance:
       propertyPath: statsManager
       value: 
       objectReference: {fileID: 1388335868}
+    - target: {fileID: 2958721397357608748, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: B
+      objectReference: {fileID: 0}
+    - target: {fileID: 3068665388936523107, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: ZButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 3373368202663194298, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: W
+      objectReference: {fileID: 0}
     - target: {fileID: 3808066088224331542, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
       propertyPath: m_Name
       value: VRUIElements
+      objectReference: {fileID: 0}
+    - target: {fileID: 3884278355335888429, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: Q
+      objectReference: {fileID: 0}
+    - target: {fileID: 3936125193828114525, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: I
+      objectReference: {fileID: 0}
+    - target: {fileID: 4088738301426006576, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: N
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209762829218557716, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: MButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261471588728304079, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: O
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269651514873304466, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: CButton
       objectReference: {fileID: 0}
     - target: {fileID: 4275206743417298881, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
       propertyPath: statsManager
       value: 
       objectReference: {fileID: 1388335868}
+    - target: {fileID: 4412656353780182641, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: G
+      objectReference: {fileID: 0}
+    - target: {fileID: 4602612961643067369, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: M
+      objectReference: {fileID: 0}
+    - target: {fileID: 4621921323333150684, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: YButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865179254332245119, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: AButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 4867448317685919052, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: VButton
+      objectReference: {fileID: 0}
     - target: {fileID: 5184853111267640991, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5285635648213203714, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: E
+      objectReference: {fileID: 0}
+    - target: {fileID: 5331344225890498156, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: A
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357426425153204654, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: HButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 5494489981337199302, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: XButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526076135441613992, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: C
+      objectReference: {fileID: 0}
+    - target: {fileID: 5617230852723379772, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: L
+      objectReference: {fileID: 0}
+    - target: {fileID: 6011204842917178294, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: DButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 6335275035180544863, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: WButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 6565544254151048900, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: EButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 6753877713172996890, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: X
+      objectReference: {fileID: 0}
+    - target: {fileID: 6804981699682289576, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: V
+      objectReference: {fileID: 0}
+    - target: {fileID: 7048098336907207586, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: H
+      objectReference: {fileID: 0}
+    - target: {fileID: 7318166014309496829, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: R
+      objectReference: {fileID: 0}
+    - target: {fileID: 7411154934172621511, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: Y
+      objectReference: {fileID: 0}
+    - target: {fileID: 7621294633980559061, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: OButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 7808303683880383358, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: BButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 7903353623663976704, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: J
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210209436188905634, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: S
+      objectReference: {fileID: 0}
+    - target: {fileID: 8370653182289659716, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: U
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493614309327390834, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: K
+      objectReference: {fileID: 0}
+    - target: {fileID: 8535562925624754617, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: QButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 8544204143973206692, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: TButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 8651405796035714288, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: LButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 8838692485371496405, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: NButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 9070612050170090745, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Name
+      value: RButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 9096686684131297156, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: T
+      objectReference: {fileID: 0}
+    - target: {fileID: 9130751712920682254, guid: 61f7be3bc1e685540918011eab8353fe, type: 3}
+      propertyPath: m_Text
+      value: Z
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3217,8 +3425,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -20, z: -90}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.079, y: -0.147}
-  m_SizeDelta: {x: 800, y: 450}
+  m_AnchoredPosition: {x: 0.09008079, y: -0.12114748}
+  m_SizeDelta: {x: 800, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1360031190
 MonoBehaviour:
@@ -3605,7 +3813,7 @@ GameObject:
   - component: {fileID: 1449031092}
   - component: {fileID: 1449031091}
   m_Layer: 5
-  m_Name: ExitButton
+  m_Name: EndButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3628,8 +3836,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 0, y: 15}
+  m_SizeDelta: {x: 300, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1449031091
 MonoBehaviour:
@@ -4224,7 +4432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5896226, g: 1, b: 0.990344, a: 0.49803922}
+  m_Color: {r: 0.50980395, g: 1, b: 1, a: 0.36862746}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4285,8 +4493,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 163}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -160, y: 105}
+  m_SizeDelta: {x: 140, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1528399867
 MonoBehaviour:
@@ -5237,7 +5445,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1168719115}
@@ -6141,8 +6349,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: -85}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -0, y: -125}
+  m_SizeDelta: {x: 300, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2080174263
 MonoBehaviour:
