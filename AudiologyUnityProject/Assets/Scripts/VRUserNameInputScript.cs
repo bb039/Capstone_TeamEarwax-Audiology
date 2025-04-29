@@ -8,12 +8,13 @@ public class VRUserNameInputScript : MonoBehaviour
     [SerializeField] InputField inputField;
     [SerializeField] TimerScript timerScript;
     [SerializeField] ClockScript clockScript;
-    [SerializeField] GameObject statsManager;
+    //[SerializeField] GameObject statsManager;
     [SerializeField] GameObject keyboardUI;
     [SerializeField] GameObject timerUI;
 
     public void ValidateInput()
     {
+        GameObject statsManager = GameObject.Find("StatsManager");
         string input = inputField.text;
 
         if (!string.IsNullOrEmpty(input))

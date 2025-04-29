@@ -20,6 +20,15 @@ public class StatsManager : MonoBehaviour
 	public float currentElapsedTime;
 
     void Awake() {
+        StatsManager[] all = FindObjectsByType<StatsManager>(FindObjectsSortMode.None);
+        if (all.Length > 1)
+        {
+            for (int i = 0; i < all.Length - 1; i++)
+            {
+                Destroy(all[i].gameObject);
+            }
+        }
+
         DontDestroyOnLoad(gameObject);
         Debug.Log("StatsManager has been initialized.");
         filePath = Application.persistentDataPath + "/stats.json";
