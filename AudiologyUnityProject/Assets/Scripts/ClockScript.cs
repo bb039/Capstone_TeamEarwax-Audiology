@@ -13,7 +13,7 @@ public class ClockScript : MonoBehaviour
 
     public string endGameScene;
 
-    [SerializeField] private GameObject statsManager;
+    //[SerializeField] private GameObject statsManager;
     
     public string startGameScene;
 
@@ -22,8 +22,18 @@ public class ClockScript : MonoBehaviour
         SceneManager.LoadScene(startGameScene);
     }
 
+    void Start() {
+        
+    }
+
     public void ResetButton()
     {
+/*         StatsManager[] allManagers = FindObjectsByType<StatsManager>(FindObjectsSortMode.None);
+
+        foreach (StatsManager sm in allManagers)
+        {
+            DestroyImmediate(sm.gameObject);  // instead of Destroy()
+        } */
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1;
     }
@@ -32,6 +42,7 @@ public class ClockScript : MonoBehaviour
     {
         if (isRunning)
         {
+            GameObject statsManager = GameObject.Find("StatsManager");
             pauseText.text = "Pause";
             elapsedTime += Time.deltaTime;
 
@@ -64,6 +75,7 @@ public class ClockScript : MonoBehaviour
 
     public void ExitSimulation()
     {
+        GameObject statsManager = GameObject.Find("StatsManager");
         Debug.Log("Exiting simulation");
         isRunning = false;
         statsManager.GetComponent<StatsManager>().SaveCurrentRecord();
