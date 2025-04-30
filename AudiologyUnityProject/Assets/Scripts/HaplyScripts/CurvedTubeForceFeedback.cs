@@ -102,42 +102,61 @@ public class CurvedTubeForceFeedback : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (cachedPositions == null || cachedPositions.Length < 4)
+        if (controlPoints == null || controlPoints.Count < 4)
             return;
 
         Gizmos.color = Color.green;
 
         int samples = 100;
-        Vector3 prevPoint = GetPointOnSpline(0);
+        Vector3 prev = EvaluateSplineFromTransforms(0f);
 
         for (int i = 1; i <= samples; i++)
         {
             float t = i / (float)samples;
-            Vector3 currPoint = GetPointOnSpline(t);
-
-            // Draw centerline
-            Gizmos.DrawLine(prevPoint, currPoint);
-
-            prevPoint = currPoint;
+            Vector3 curr = EvaluateSplineFromTransforms(t);
+            Gizmos.DrawLine(prev, curr);
+            prev = curr;
         }
 
-        // Draw tube cross sections (optional)
+        // Optional: show tube radius profile
         Gizmos.color = Color.cyan;
         for (int i = 0; i <= samples; i += 10)
         {
             float t = i / (float)samples;
-            Vector3 point = GetPointOnSpline(t);
-            float radius = radiusProfile != null ? radiusProfile.Evaluate(t) : 0.01f;
-
-            Gizmos.DrawWireSphere(point, radius);
-        }
-
-        // Draw closest point to cursor (optional)
-        if (visualizeClosestPoint)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(_closestPoint, 0.002f);
+            Vector3 p = EvaluateSplineFromTransforms(t);
+            float r = radiusProfile != null ? radiusProfile.Evaluate(t) : 0.01f;
+            Gizmos.DrawWireSphere(p, r);
         }
     }
+
+    private Vector3 EvaluateSplineFromTransforms(float t)
+    {
+        if (controlPoints == null || controlPoints.Count < 4)
+            return Vector3.zero;
+
+        int numSections = controlPoints.Count - 3;
+        t = Mathf.Clamp01(t) * numSections;
+        int currIndex = Mathf.FloorToInt(t);
+        t -= currIndex;
+
+        int p0 = Mathf.Clamp(currIndex, 0, controlPoints.Count - 1);
+        int p1 = Mathf.Clamp(currIndex + 1, 0, controlPoints.Count - 1);
+        int p2 = Mathf.Clamp(currIndex + 2, 0, controlPoints.Count - 1);
+        int p3 = Mathf.Clamp(currIndex + 3, 0, controlPoints.Count - 1);
+
+        Vector3 pos0 = controlPoints[p0].position;
+        Vector3 pos1 = controlPoints[p1].position;
+        Vector3 pos2 = controlPoints[p2].position;
+        Vector3 pos3 = controlPoints[p3].position;
+
+        return 0.5f * (
+            (2f * pos1) +
+            (-pos0 + pos2) * t +
+            (2f * pos0 - 5f * pos1 + 4f * pos2 - pos3) * t * t +
+            (-pos0 + 3f * pos1 - 3f * pos2 + pos3) * t * t * t
+        );
+    }
+
+
 
 }
