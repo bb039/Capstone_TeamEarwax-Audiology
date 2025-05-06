@@ -2,12 +2,30 @@
 
 A virtual reality simulation with a patient’s ear canal for students to practice cerumen removal effectively.
 
-## How to Setup (to do later)
+## How to Setup
 ### Prerequisites
 - Need: VR headset, Haply device, VR-ready computer/laptop
 - Install Unity Hub and Unity version 6000.0.40f1
 - Install the Meta Quest Link app and follow the Quest setup instructions
 - Clone the main branch of this repository
+
+#### Unity setup
+- In the Unity Hub, press Open > From Disk
+- Select the AudiologyUnityProject folder from the repository
+- Open the project to load dependencies
+
+#### Quest
+- Enable Developer Mode
+- Connect to the Meta quest link app on the computer
+
+#### Haply
+- Follow Haply quick start guide
+- Configure Haply as needed
+
+### Running the project
+- Make sure Haply and VR are connected to the computer
+- In Unity, select the Intro Scene
+- Press the play button
 
 ## Changelog
 ### Version 0.8.0
