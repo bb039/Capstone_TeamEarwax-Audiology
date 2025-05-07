@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Audio;
 
 public class DangerOverlayUI : MonoBehaviour
 {
     public static DangerOverlayUI Instance;
-
+    public AudioClip scream;
+    [SerializeField]AudioSource audioData;
     [SerializeField] private Image overlayImage;
     [SerializeField] private TextMeshProUGUI warningText;
     [SerializeField] private Color dangerColor = new Color(1f, 0f, 0f, 0.4f);
@@ -40,6 +42,11 @@ public class DangerOverlayUI : MonoBehaviour
         Instance._pendingMessage = message; 
     }
 
+    private void Start()
+    {
+        audioData = GetComponent<AudioSource>();
+    }
+
     private void Update()
     {
         if (overlayImage == null || warningText == null) return;
@@ -54,6 +61,7 @@ public class DangerOverlayUI : MonoBehaviour
         // Update warning text content and alpha safely
         if (_currentAlpha > 0.01f)
         {
+            audioData.Play();
             warningText.text = _pendingMessage;  
             warningText.alpha = Mathf.Clamp01(_currentAlpha * 2f);
         }
