@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Audio;
 
 public class DangerOverlayUI : MonoBehaviour
 {
     public static DangerOverlayUI Instance;
-
+    public AudioClip scream;
+    [SerializeField]AudioSource audioData;
     [SerializeField] private Image overlayImage;
     [SerializeField] private TextMeshProUGUI warningText;
     [SerializeField] private Color dangerColor = new Color(1f, 0f, 0f, 0.4f);
@@ -13,6 +15,7 @@ public class DangerOverlayUI : MonoBehaviour
     private float _targetAlpha = 0f;
     private float _currentAlpha = 0f;
     private string _pendingMessage = "";
+    private bool _playScreamNextFrame = false;
 
     private void Awake()
     {
@@ -36,8 +39,20 @@ public class DangerOverlayUI : MonoBehaviour
     {
         if (Instance == null) return;
 
+        // Request audio playback if entering danger
+        if (normalized > 0f && Instance._targetAlpha == 0f)
+        {
+            Instance._playScreamNextFrame = true;
+        }
+
         Instance._targetAlpha = Mathf.Clamp01(normalized);
-        Instance._pendingMessage = message; 
+        Instance._pendingMessage = message;
+    }
+
+
+    private void Start()
+    {
+        audioData = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -46,15 +61,23 @@ public class DangerOverlayUI : MonoBehaviour
 
         _currentAlpha = Mathf.Lerp(_currentAlpha, _targetAlpha, Time.deltaTime * 10f);
 
-        // Update vignette transparency
         Color newColor = dangerColor;
         newColor.a = Mathf.Lerp(0f, dangerColor.a, _currentAlpha);
         overlayImage.color = newColor;
 
-        // Update warning text content and alpha safely
         if (_currentAlpha > 0.01f)
         {
-            warningText.text = _pendingMessage;  
+            if (_playScreamNextFrame)
+            {
+                if (!audioData.isPlaying)
+                {
+                    audioData.clip = scream;
+                    audioData.Play();
+                }
+                _playScreamNextFrame = false;
+            }
+
+            warningText.text = _pendingMessage;
             warningText.alpha = Mathf.Clamp01(_currentAlpha * 2f);
         }
         else
@@ -63,4 +86,5 @@ public class DangerOverlayUI : MonoBehaviour
             warningText.alpha = 0f;
         }
     }
+
 }
