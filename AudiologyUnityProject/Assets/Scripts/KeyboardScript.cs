@@ -8,7 +8,10 @@ public class KeyboardScript : MonoBehaviour
 
     public void OnButtonPress()
     {
-        inputField.text += textField.text;
+        if (inputField.text.Length < 10)
+        {
+            inputField.text += textField.text;
+        }
     }
 
     public void OnBackspacePress()

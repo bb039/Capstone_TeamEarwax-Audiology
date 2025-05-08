@@ -70,4 +70,5 @@ public class CubeForceFeedback : MonoBehaviour
             _renderer.material.color = Color.Lerp(minForceColor, maxForceColor, normalized);
         }
     }
+
 }

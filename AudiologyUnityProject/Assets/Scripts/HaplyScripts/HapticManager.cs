@@ -14,6 +14,7 @@ public class HapticManager : MonoBehaviour
     private readonly List<MovingSphere> movingSpheres = new();
     private readonly List<PlaneForceFeedback> planes = new();
     private readonly List<CuretteHapticTrigger> curetteTriggers = new();
+    private readonly List<CylinderForceFeedback> cylinders = new();
 
 
     private void OnEnable()
@@ -37,6 +38,7 @@ public class HapticManager : MonoBehaviour
         if (!cubes.Contains(cube))
             cubes.Add(cube);
     }
+    
 
     public void RegisterSphere(SphereForceFeedback sphere)
     {
@@ -74,6 +76,11 @@ public class HapticManager : MonoBehaviour
             curetteTriggers.Add(trigger);
     }
 
+    public void RegisterCylinder(CylinderForceFeedback cylinder)
+    {
+        if (!cylinders.Contains(cylinder))
+            cylinders.Add(cylinder);
+    }
 
 
     void OnDeviceStateChanged(object sender, Inverse3EventArgs args)
@@ -137,6 +144,10 @@ public class HapticManager : MonoBehaviour
             }
         }
 
+        foreach (var cylinder in cylinders)
+        {
+            totalForce += cylinder.CalculateForce(pos, vel, radius);
+        }
 
         args.DeviceController.SetCursorLocalForce(totalForce);
 

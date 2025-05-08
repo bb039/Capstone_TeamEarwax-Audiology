@@ -2,125 +2,111 @@
 
 public class MovingSphere : MonoBehaviour
 {
-    [Range(0, 100)]
-    public float pushForce = 0.01f;
-    [Range(0, 100)]
-    public float stickiness = 30f;
-    [Range(0, 10)]
-    public float breakawayForce = 3f;
-    [Range(0, 1)]
-    public float squishAmount = 0.2f;
-    [Range(0, 10)]
-    public float squishSpeed = 5f;
+    [Header("Force Settings")]
+    [Range(0, 100)] public float pushForce = 0.01f;
+    [Range(0, 100)] public float stickiness = 30f;
+    [Range(0, 10)] public float breakawayForce = 3f;
 
+    [Header("Squish Visuals")]
+    [Range(0, 1)] public float squishAmount = 0.2f;
+    [Range(0, 10)] public float squishSpeed = 5f;
     public Transform visualSphere;
 
+    [Header("Spline Tube Reference")]
+    public CurvedTubeForceFeedback curvedTube;
+
     private Rigidbody rb;
-    private Vector3 cachedPosition;
-    private Vector3 pendingForce;
-    private Vector3 initialScale;
-    private Vector3 targetScale;
     private float sphereRadius;
+    private Vector3 mainThreadPosition;
+    private Vector3 initialScale;
+    private Vector3 pendingForce = Vector3.zero;
+
     private bool stuck = true;
-
-    private float currentSquishFactor = 0f;
-    private float targetSquishFactor = 0f;
-
-    private bool isTouching = false;
+    private float currentSquish = 0f;
+    private float targetSquish = 0f;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        sphereRadius = transform.lossyScale.x / 2f;
+        rb.useGravity = false;
 
-        if (visualSphere == null)
-        {
+        sphereRadius = GetComponent<SphereCollider>().radius * transform.lossyScale.x;
+
+        if (visualSphere == null && transform.childCount > 0)
             visualSphere = transform.GetChild(0);
-        }
 
-        initialScale = visualSphere.localScale;
-        targetScale = initialScale;
+        initialScale = visualSphere != null ? visualSphere.localScale : Vector3.one;
 
-        FindObjectOfType<HapticManager>().RegisterMovingSphere(this);
+        FindObjectOfType<HapticManager>()?.RegisterMovingSphere(this);
+
+        if (curvedTube == null)
+            curvedTube = FindObjectOfType<CurvedTubeForceFeedback>();
     }
 
     private void Update()
     {
-        cachedPosition = transform.position;
+        mainThreadPosition = transform.position;
 
         if (pendingForce != Vector3.zero)
         {
             if (stuck)
             {
                 rb.AddForce(-rb.linearVelocity * stickiness, ForceMode.Force);
-
                 if (rb.linearVelocity.magnitude > breakawayForce)
-                {
                     stuck = false;
-                }
             }
 
             rb.AddForce(pendingForce, ForceMode.Force);
             pendingForce = Vector3.zero;
         }
 
-        if (isTouching)
+        // ✅ Apply outward radial force from spline center
+        if (curvedTube != null)
         {
-            targetSquishFactor = 1f;
-        }
-        else
-        {
-            targetSquishFactor = 0f;
+            Vector3 radialForce = curvedTube.CalculateRadialWallForce(transform.position, rb.linearVelocity, sphereRadius);
+            rb.AddForce(radialForce, ForceMode.Force);
         }
 
-        currentSquishFactor = Mathf.Lerp(currentSquishFactor, targetSquishFactor, squishSpeed * Time.deltaTime);
-        ApplySquish(currentSquishFactor);
+        currentSquish = Mathf.Lerp(currentSquish, targetSquish, squishSpeed * Time.deltaTime);
+        ApplySquish(currentSquish);
     }
 
-    public Vector3 CalculateForce(Vector3 cursorPosition, Vector3 cursorVelocity, float cursorRadius)
+    /// <summary>
+    /// HapticManager calls this to compute collision resistance and build pushing force.
+    /// </summary>
+    public Vector3 CalculateForce(Vector3 cursorPos, Vector3 cursorVel, float cursorRadius)
     {
-        Vector3 force = Vector3.zero;
-
-        Vector3 distanceVector = cursorPosition - cachedPosition;
-        float distance = distanceVector.magnitude;
+        Vector3 delta = cursorPos - mainThreadPosition;
+        float distance = delta.magnitude;
         float penetration = cursorRadius + sphereRadius - distance;
 
-        if (penetration > 0)
+        if (penetration > 0f)
         {
-            isTouching = true;
+            Vector3 normal = delta.normalized;
 
-            Vector3 normal = distanceVector.normalized;
-
-            if (Mathf.Abs(normal.y) > 0.3f)
-            {
-                normal.y = Mathf.Sign(normal.y) * 0.3f;
-                normal.Normalize();
-            }
-
-            force = normal * penetration * 100f;
-            force -= cursorVelocity * 10f;
+            Vector3 force = normal * penetration * 100f;
+            force -= cursorVel * 10f;
 
             pendingForce += -normal * pushForce;
-        }
-        else
-        {
-            isTouching = false;
+            targetSquish = 1f;
+            return force;
         }
 
-        return force;
+        targetSquish = 0f;
+        return Vector3.zero;
     }
 
     private void ApplySquish(float factor)
     {
-        float lateralStretch = 1.0f + factor * squishAmount;
-        float verticalSquash = 1.0f - factor * squishAmount;
+        if (visualSphere == null) return;
 
-        targetScale = new Vector3(
-            initialScale.x * lateralStretch,
-            initialScale.y * verticalSquash,
-            initialScale.z * lateralStretch
+        float stretch = 1f + factor * squishAmount;
+        float squash = 1f - factor * squishAmount;
+
+        visualSphere.localScale = new Vector3(
+            initialScale.x * stretch,
+            initialScale.y * squash,
+            initialScale.z * stretch
         );
-
-        visualSphere.localScale = targetScale;
     }
 }
