@@ -1,10 +1,10 @@
-# Cerumen Cleaning Simulation
+# Cerumen (Ear Wax) Cleaning Simulation
 
-A virtual reality simulation with a patient’s ear canal for students to practice cerumen removal effectively.
+This virtual reality application is designed to provide medical professionals and trainees with a safe, realistic environment for mastering the proper procedure for cleaning cerumen (ear wax) out of patients' ears. It achieves high fidelity through a comprehensive virtual examination room and patient model, along with integration of a Haply precision haptic controller to allow for realistic textures and tactile feedback during instrument interaction.
 
 ## How to Setup
 ### Prerequisites
-- Need: VR headset, Haply device, VR-ready computer/laptop
+- Need: VR headset, Haply device, VR-ready computer/laptop (Windows)
 - Install Unity Hub and Unity version 6000.0.40f1
 - Install the Meta Quest Link app and follow the Quest setup instructions
 - Clone the main branch of this repository
