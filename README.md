@@ -28,6 +28,10 @@ This virtual reality application is designed to provide medical professionals an
 - Press the play button
 
 ## Changelog
+### Version 0.8.1
+ - Replaced previous patient model (head) with full body patient model
+ - New patient model now animates (sitting) within the clinic room
+   
 ### Version 0.8.0
 - Finished up scene layout (timer, buttons, XR rig)
 - Polished UI with VR capabilities, completed switch to world space UI
