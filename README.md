@@ -31,6 +31,8 @@ This virtual reality application is designed to provide medical professionals an
 ### Version 0.8.1
  - Replaced previous patient model (head) with full body patient model
  - New patient model now animates (sitting) within the clinic room
+ - Replaced curette model with lower triangle count curette model
+ - Yet-to-be-implemented code can found on evie-dev and Brayson-dev branches. In-development features include: Re-working of physics interactions, creation of new FullScene using new patient model
    
 ### Version 0.8.0
 - Finished up scene layout (timer, buttons, XR rig)
