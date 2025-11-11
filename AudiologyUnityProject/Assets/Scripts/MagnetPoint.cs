@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Referenced from: https://www.youtube.com/watch?v=zUmDcB3ZgOA
 public class MagnetPoint : MonoBehaviour
 {
     public float forceFactor = 200f;
