@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Haply.Inverse.DeviceControllers;
 using Haply.Inverse.DeviceData;
 using UnityEngine;
+using System; // Required for DateTime
 
 public class HapticManager : MonoBehaviour
 {
@@ -15,7 +16,8 @@ public class HapticManager : MonoBehaviour
     private readonly List<PlaneForceFeedback> planes = new();
     private readonly List<CuretteHapticTrigger> curetteTriggers = new();
     private readonly List<CylinderForceFeedback> cylinders = new();
-
+    private Vector3 previous_force = Vector3.zero;
+    private int previous_ms = 0;
 
     private void OnEnable()
     {
@@ -89,25 +91,39 @@ public class HapticManager : MonoBehaviour
         Vector3 vel = args.DeviceController.CursorLocalVelocity;
         float radius = args.DeviceController.Cursor.Radius;
 
-        Vector3 totalForce = Vector3.zero;
+        //Vector3 totalForce = Vector3.zero;
         float maxDanger = 0f;
         string warningMessage = "";
 
-        foreach (var cube in cubes)
-        {
-            totalForce += cube.CalculateForce(pos, vel, radius);
+        previous_ms = DateTime.Now.Millisecond;
 
-            float cubeDanger = cube.NormalizedPenetration();
-            if (cubeDanger > maxDanger)
-            {
-                maxDanger = cubeDanger;
-                warningMessage = cube.warningMessage;
-            }
-        }
+        Vector3 cubeForce = Vector3.zero;
+        Vector3 sphereForce = Vector3.zero;
+        Vector3 zoneForce = Vector3.zero;
+        Vector3 tubeForce = Vector3.zero;
+        Vector3 movingSphereForce = Vector3.zero;
+        Vector3 planeForce = Vector3.zero;
+        Vector3 triggerForce = Vector3.zero;
+        Vector3 cylinderForce = Vector3.zero;
+
+        const int MAX_FORCE = 3;
+
+        // Need to refactor - calcuations are incorrect
+        //foreach (var cube in cubes)
+        //{
+        //    cubeForce += cube.CalculateForce(pos, vel, radius);
+
+        //    float cubeDanger = cube.NormalizedPenetration();
+        //    if (cubeDanger > maxDanger)
+        //    {
+        //        maxDanger = cubeDanger;
+        //        warningMessage = cube.warningMessage;
+        //    }
+        //}
 
         foreach (var sphere in spheres)
         {
-            totalForce += sphere.CalculateForce(pos, vel, radius);
+            sphereForce = sphere.CalculateForce(pos, vel, radius);
         }
 
         foreach (var zone in dangerZones)
@@ -123,31 +139,42 @@ public class HapticManager : MonoBehaviour
 
         foreach (var tube in curvedTubes)
         {
-            totalForce += tube.CalculateForce(pos, vel, radius);
+            tubeForce = tube.CalculateForce(pos, vel, radius);
         }
 
         foreach (var sphere in movingSpheres)
         {
-            totalForce += sphere.CalculateForce(pos, vel, radius);
+            movingSphereForce = sphere.CalculateForce(pos, vel, radius);
         }
 
         foreach (var plane in planes)
         {
-            totalForce += plane.CalculateForce(pos, vel, radius);
+            planeForce = plane.CalculateForce(pos, vel, radius);
         }
 
         foreach (var trigger in curetteTriggers)
         {
             if (trigger.isTouchingCube)
             {
-                totalForce += trigger.CalculateForce(pos, vel, radius);
+                triggerForce = trigger.CalculateForce(pos, vel, radius);
             }
         }
 
         foreach (var cylinder in cylinders)
         {
-            totalForce += cylinder.CalculateForce(pos, vel, radius);
+            cylinderForce = cylinder.CalculateForce(pos, vel, radius);
         }
+
+        cubeForce = Vector3.ClampMagnitude(cubeForce, MAX_FORCE);
+        sphereForce = Vector3.ClampMagnitude(sphereForce, MAX_FORCE);
+        zoneForce = Vector3.ClampMagnitude(zoneForce, MAX_FORCE);
+        tubeForce = Vector3.ClampMagnitude(tubeForce, MAX_FORCE);
+        movingSphereForce = Vector3.ClampMagnitude(movingSphereForce, MAX_FORCE / 30); // Higher causes jitter issues
+        planeForce = Vector3.ClampMagnitude(planeForce, MAX_FORCE);
+        triggerForce = Vector3.ClampMagnitude(triggerForce, MAX_FORCE);
+        cylinderForce = Vector3.ClampMagnitude(cylinderForce, MAX_FORCE);
+
+        Vector3 totalForce = cubeForce + sphereForce + zoneForce + tubeForce + movingSphereForce + planeForce + triggerForce + cylinderForce;
 
         args.DeviceController.SetCursorLocalForce(totalForce);
 
