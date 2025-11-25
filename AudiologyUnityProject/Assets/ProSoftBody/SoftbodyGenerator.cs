@@ -148,6 +148,8 @@ public class SoftbodyGenerator : MonoBehaviour
         }
     }
     public GameObject centerOfMasObj = null;
+
+    public Rigidbody externalRigidBody;
     private void Awake()
     {
         
@@ -228,14 +230,14 @@ public class SoftbodyGenerator : MonoBehaviour
 
             // add collider to each of vertex ( sphere collider )
             var sphereColider = _tempObj.AddComponent<SphereCollider>() as SphereCollider;
-            sphereColider.radius = collissionSurfaceOffset;
+            sphereColider.radius = Mathf.Max(0.003f, collissionSurfaceOffset);
             // add current collider to Collider list ;
             sphereColliders.Add(sphereColider);
 
 
             // add rigidBody to each of vertex
             var _tempRigidBody = _tempObj.AddComponent<Rigidbody>();
-            _tempRigidBody.mass = mass / _optimizedVertex.Count;
+            _tempRigidBody.mass = Mathf.Max(0.02f, mass / _optimizedVertex.Count);
             _tempRigidBody.linearDamping = physicsRoughness;
             
 
@@ -279,7 +281,15 @@ public class SoftbodyGenerator : MonoBehaviour
             // add rigidBody to center of mass as a sphere collider
             var _tempRigidBody = _tempObj.AddComponent<Rigidbody>();
             
-            centerOfMasObj = _tempObj;            
+            centerOfMasObj = _tempObj;       
+            
+            if (externalRigidBody != null)
+            {
+                var fj = centerOfMasObj.AddComponent<FixedJoint>();
+                fj.connectedBody = externalRigidBody;
+                fj.breakForce = Mathf.Infinity;
+                fj.breakTorque = Mathf.Infinity;
+            }
         }
 
         // IGNORE COLLISTION BETWEEN ALL OF THE VERTEXES AND CENTER OFF MASS
@@ -353,12 +363,12 @@ public class SoftbodyGenerator : MonoBehaviour
             SoftJointLimit jointlimitHihj = new SoftJointLimit();
             jointlimitHihj.bounciness = 1.1f;
             jointlimitHihj.contactDistance = distanceBetween;
-            jointlimitHihj.limit = 10;
+            jointlimitHihj.limit = 0.1f;
 
             SoftJointLimit jointlimitLow = new SoftJointLimit();
             jointlimitLow.bounciness = 1.1f;
             jointlimitLow.contactDistance = distanceBetween;
-            jointlimitLow.limit = -10;
+            jointlimitLow.limit = -0.1f;
             
 
             thisBodyJoint.highTwistLimit = jointlimitHihj;
