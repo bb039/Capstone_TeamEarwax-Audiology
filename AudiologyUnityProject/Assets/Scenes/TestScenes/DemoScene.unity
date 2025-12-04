@@ -2211,7 +2211,8 @@ GameObject:
   - component: {fileID: 1090185606}
   - component: {fileID: 1090185605}
   - component: {fileID: 1090185604}
-  m_Layer: 0
+  - component: {fileID: 1090185608}
+  m_Layer: 7
   m_Name: SpawnerCylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2225,15 +2226,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1090185603}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e929928a20bbfa345b2640768a4431df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spherePrefab: {fileID: 1818583894842236187, guid: 19c0c23e1fd17fa48972d23ce0549680, type: 3}
+  spherePrefab: {fileID: 6652623399857713857, guid: bcf849617422c8f4aa53f6bec33f14d5, type: 3}
   managerObject: {fileID: 1090185607}
-  amountToSpawn: 1
-  spawn_radius: 0.25
+  amountToSpawn: 5
+  spawn_radius: 0.01
 --- !u!136 &1090185605
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2274,12 +2275,32 @@ Transform:
   m_GameObject: {fileID: 1090185603}
   serializedVersion: 2
   m_LocalRotation: {x: 0.4961225, y: -0.5038477, z: 0.50384766, w: 0.49612254}
-  m_LocalPosition: {x: 9.17, y: 241.51, z: -9.126}
+  m_LocalPosition: {x: 9.169, y: 241.604, z: -9.058}
   m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 90.885}
+--- !u!114 &1090185608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1090185603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ae82ceade0d2b245854fdbc0f02f062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubePrefab: {fileID: 6652623399857713857, guid: bcf849617422c8f4aa53f6bec33f14d5, type: 3}
+  tunnelCenter: {fileID: 0}
+  tunnelRadius: 1
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  gap: 0
+  manualObjectSize: 0.05
 --- !u!1 &1092294911
 GameObject:
   m_ObjectHideFlags: 0

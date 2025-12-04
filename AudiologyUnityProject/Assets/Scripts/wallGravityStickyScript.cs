@@ -3,24 +3,23 @@ using UnityEngine;
 public class wallGravityStickyScript : MonoBehaviour
 {
     private Rigidbody rb;
-    float checkRadius;
+    Vector3 checkRadius;
     public LayerMask wallLayer;
     float velocity = 0f;
 
     public bool IsTouchingWall() {
-        return Physics.CheckSphere(gameObject.transform.position, checkRadius, wallLayer);
+        return Physics.CheckBox(gameObject.transform.position, checkRadius, gameObject.transform.rotation, wallLayer);
     }
     public bool LogCollidingObjects()
     {
         // 1. Get an array of all colliders overlapping the sphere
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, checkRadius, wallLayer);
+        Collider[] hitColliders = Physics.OverlapBox(gameObject.transform.position, checkRadius, gameObject.transform.rotation, wallLayer);
 
         // 2. Check if the array contains any colliders
         if (hitColliders.Length > 0)
         {
             // 3. Loop through the array and print the name of the object
             Debug.Log($"Object {gameObject.name} is colliding with {hitColliders.Length} wall(s):");
-
             foreach (Collider hitCollider in hitColliders)
             {
                 // Access the GameObject from the Collider and print its name
@@ -33,7 +32,8 @@ public class wallGravityStickyScript : MonoBehaviour
     }
 
     private void Start() {
-        checkRadius = gameObject.transform.localScale[0];
+        checkRadius = gameObject.transform.localScale;
+        checkRadius = new Vector3(checkRadius[0] / 2.0f, checkRadius[1] / 2.0f, checkRadius[2] / 2.0f);
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
     }
