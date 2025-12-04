@@ -8,7 +8,7 @@ public class wallGravityStickyScript : MonoBehaviour
     float velocity = 0f;
 
     public bool IsTouchingWall() {
-        return Physics.CheckBox(gameObject.transform.position, checkRadius, gameObject.transform.rotation, wallLayer);
+        return Physics.CheckBox(gameObject.transform.position, checkRadius * 1.01f, gameObject.transform.rotation, wallLayer);
     }
     public bool LogCollidingObjects()
     {
