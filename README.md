@@ -28,6 +28,10 @@ This virtual reality application is designed to provide medical professionals an
 - Press the play button
 
 ## Changelog
+### Version 0.9.0
+ - Replaced the usage of an earwax sphere with an earwax cube, using said cube to create an earwax mass for the player to clear from the ear canal
+ - Reworked the scripting of the earwax sphere with a new script, giving a better impression of an earwax material that can stick and does not roll or move freely within the ear canal
+   
 ### Version 0.8.1
  - Replaced previous patient model (head) with full body patient model
  - New patient model now animates (sitting) within the clinic room
