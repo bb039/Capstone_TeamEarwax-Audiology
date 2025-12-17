@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Cube
   - Ball
+  - Wax
+  - StickyTarget
   layers:
   - Default
   - TransparentFX
@@ -16,9 +18,9 @@ TagManager:
   - Player
   - EarwaxBall
   - Barrier
-  - 
-  - 
-  - 
+  - Ear Canal
+  - Curette
+  - Sticky
   - 
   - 
   - 
