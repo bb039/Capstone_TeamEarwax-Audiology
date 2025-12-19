@@ -457,8 +457,9 @@ public class DebugColorGameObject : MonoBehaviour
 {
     public Color Color { get; set; }
 }
-
+#if UNITY_EDITOR
 [CustomEditor(typeof(SoftbodyGenerator))]
+
 public class LookAtPointEditor : Editor
 {
     public override void OnInspectorGUI()
@@ -480,3 +481,4 @@ public class LookAtPointEditor : Editor
         
     }
 }
+#endif

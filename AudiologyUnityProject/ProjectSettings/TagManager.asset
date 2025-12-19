@@ -8,6 +8,7 @@ TagManager:
   - Ball
   - Wax
   - StickyTarget
+  - Ear Wall
   layers:
   - Default
   - TransparentFX
