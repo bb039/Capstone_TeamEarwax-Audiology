@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 6129219919725067670}
   - component: {fileID: 7916677181994885632}
   - component: {fileID: 5078839548269989095}
-  - component: {fileID: -2168589394556985771}
-  m_Layer: 0
+  - component: {fileID: -1468508546724260007}
+  m_Layer: 7
   m_Name: Sphere
   m_TagString: Ball
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1818583894842236187}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f1362366f7c9554b8d6ed43599ba3da, type: 3}
   m_Name: 
@@ -157,7 +157,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-2168589394556985771
+--- !u!114 &-1468508546724260007
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -166,12 +166,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1818583894842236187}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0c94ea3a1b6c9444841d7b0af4c0aed, type: 3}
+  m_Script: {fileID: 11500000, guid: 902d3ae146737154384c643ef0641f50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runOptimizedVersion: 0
-  _collissionSurfaceOffset: 0.001
-  _softness: 1
-  _damp: 0.2
-  _mass: 1
-  centerOfMasObj: {fileID: 0}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 1

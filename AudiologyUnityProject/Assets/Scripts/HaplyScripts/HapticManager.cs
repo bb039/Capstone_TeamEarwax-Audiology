@@ -2,182 +2,155 @@ using System.Collections.Generic;
 using Haply.Inverse.DeviceControllers;
 using Haply.Inverse.DeviceData;
 using UnityEngine;
-using System; // Required for DateTime
 
 public class HapticManager : MonoBehaviour
 {
     public Inverse3Controller inverse3;
+    
+    // SAFETY FLAG: Stops the loop instantly if the object is dying
+    private bool _isDestroyed = false;
 
-    private readonly List<CubeForceFeedback> cubes = new();
-    private readonly List<SphereForceFeedback> spheres = new();
-    private readonly List<DangerZone> dangerZones = new();
-    private readonly List<CurvedTubeForceFeedback> curvedTubes = new();
-    private readonly List<MovingSphere> movingSpheres = new();
-    private readonly List<PlaneForceFeedback> planes = new();
-    private readonly List<CuretteHapticTrigger> curetteTriggers = new();
-    private readonly List<CylinderForceFeedback> cylinders = new();
-    private Vector3 previous_force = Vector3.zero;
-    private int previous_ms = 0;
+    // --- 1. REGISTRATION LISTS ---
+    private readonly List<CubeForceFeedback> _cubesReg = new();
+    private readonly List<SphereForceFeedback> _spheresReg = new();
+    private readonly List<DangerZone> _zonesReg = new();
+    private readonly List<CurvedTubeForceFeedback> _tubesReg = new();
+    private readonly List<MovingSphere> _movingReg = new();
+    private readonly List<PlaneForceFeedback> _planesReg = new();
+    private readonly List<CuretteHapticTrigger> _triggersReg = new();
+    private readonly List<CylinderForceFeedback> _cylindersReg = new();
+
+    // --- 2. BUFFERS ---
+    private const int BUFFER_SIZE = 64;
+    private CubeForceFeedback[] _bufCubes = new CubeForceFeedback[BUFFER_SIZE];
+    private SphereForceFeedback[] _bufSpheres = new SphereForceFeedback[BUFFER_SIZE];
+    private DangerZone[] _bufZones = new DangerZone[BUFFER_SIZE];
+    private CurvedTubeForceFeedback[] _bufTubes = new CurvedTubeForceFeedback[BUFFER_SIZE];
+    private MovingSphere[] _bufMoving = new MovingSphere[BUFFER_SIZE];
+    private PlaneForceFeedback[] _bufPlanes = new PlaneForceFeedback[BUFFER_SIZE];
+    private CuretteHapticTrigger[] _bufTriggers = new CuretteHapticTrigger[BUFFER_SIZE];
+    private CylinderForceFeedback[] _bufCylinders = new CylinderForceFeedback[BUFFER_SIZE];
+
+    private volatile int _cntCubes, _cntSpheres, _cntZones, _cntTubes, _cntMoving, _cntPlanes, _cntTriggers, _cntCylinders;
 
     private void OnEnable()
     {
-        if (inverse3 == null)
+        _isDestroyed = false;
+        if (inverse3 == null) inverse3 = FindFirstObjectByType<Inverse3Controller>();
+        
+        if (inverse3 != null) 
         {
-            inverse3 = FindFirstObjectByType<Inverse3Controller>();
+            // Unsubscribe first just in case (prevents double-subscription)
+            inverse3.DeviceStateChanged -= OnDeviceStateChanged;
+            inverse3.DeviceStateChanged += OnDeviceStateChanged;
         }
-
-        inverse3.DeviceStateChanged += OnDeviceStateChanged;
     }
 
     private void OnDisable()
     {
+        Cleanup();
+    }
+
+    private void OnDestroy()
+    {
+        Cleanup();
+    }
+
+    private void OnApplicationQuit()
+    {
+        Cleanup();
+    }
+
+    // --- THE FIX: Aggressive Cleanup Method ---
+    private void Cleanup()
+    {
+        _isDestroyed = true;
+
         if (inverse3 != null)
+        {
+            // 1. Unsubscribe immediately so memory can be freed
             inverse3.DeviceStateChanged -= OnDeviceStateChanged;
+            
+            // 2. FORCE RELEASE (Stop the motors)
+            if (inverse3.IsReady)
+            {
+                inverse3.SetCursorLocalForce(Vector3.zero); // Send one last zero
+                inverse3.Release(); // Kill the connection
+            }
+        }
     }
 
-    public void RegisterCube(CubeForceFeedback cube)
+    // --- REGISTRATION STUBS ---
+    public void RegisterCube(CubeForceFeedback x) { if (!_cubesReg.Contains(x)) _cubesReg.Add(x); }
+    public void RegisterSphere(SphereForceFeedback x) { if (!_spheresReg.Contains(x)) _spheresReg.Add(x); }
+    public void RegisterDangerZone(DangerZone x) { if (!_zonesReg.Contains(x)) _zonesReg.Add(x); }
+    public void RegisterTube(CurvedTubeForceFeedback x) { if (!_tubesReg.Contains(x)) _tubesReg.Add(x); }
+    public void RegisterMovingSphere(MovingSphere x) { if (!_movingReg.Contains(x)) _movingReg.Add(x); }
+    public void RegisterPlane(PlaneForceFeedback x) { if (!_planesReg.Contains(x)) _planesReg.Add(x); }
+    public void RegisterCuretteTrigger(CuretteHapticTrigger x) { if (!_triggersReg.Contains(x)) _triggersReg.Add(x); }
+    public void RegisterCylinder(CylinderForceFeedback x) { if (!_cylindersReg.Contains(x)) _cylindersReg.Add(x); }
+
+    // --- MAIN THREAD ---
+    private void Update()
     {
-        if (!cubes.Contains(cube))
-            cubes.Add(cube);
-    }
-    
+        if (_isDestroyed) return;
 
-    public void RegisterSphere(SphereForceFeedback sphere)
+        _cntCubes = FillBuffer(_cubesReg, _bufCubes);
+        _cntSpheres = FillBuffer(_spheresReg, _bufSpheres);
+        _cntZones = FillBuffer(_zonesReg, _bufZones);
+        _cntTubes = FillBuffer(_tubesReg, _bufTubes);
+        _cntMoving = FillBuffer(_movingReg, _bufMoving);
+        _cntPlanes = FillBuffer(_planesReg, _bufPlanes);
+        _cntTriggers = FillBuffer(_triggersReg, _bufTriggers);
+        _cntCylinders = FillBuffer(_cylindersReg, _bufCylinders);
+    }
+
+    private int FillBuffer<T>(List<T> sourceList, T[] targetArray) where T : MonoBehaviour
     {
-        if (!spheres.Contains(sphere))
-            spheres.Add(sphere);
+        int count = 0;
+        for (int i = 0; i < sourceList.Count; i++)
+        {
+            var item = sourceList[i];
+            if (item != null && item.isActiveAndEnabled)
+            {
+                if (count < targetArray.Length)
+                {
+                    targetArray[count] = item;
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
-    public void RegisterDangerZone(DangerZone zone)
-    {
-        if (!dangerZones.Contains(zone))
-            dangerZones.Add(zone);
-    }
-
-    public void RegisterTube(CurvedTubeForceFeedback tube)
-    {
-        if (!curvedTubes.Contains(tube))
-            curvedTubes.Add(tube);
-    }
-
-    public void RegisterMovingSphere(MovingSphere sphere)
-    {
-        if (!movingSpheres.Contains(sphere))
-            movingSpheres.Add(sphere);
-    }
-
-    public void RegisterPlane(PlaneForceFeedback plane)
-    {
-        if (!planes.Contains(plane))
-            planes.Add(plane);
-    }
-
-    public void RegisterCuretteTrigger(CuretteHapticTrigger trigger)
-    {
-        if (!curetteTriggers.Contains(trigger))
-            curetteTriggers.Add(trigger);
-    }
-
-    public void RegisterCylinder(CylinderForceFeedback cylinder)
-    {
-        if (!cylinders.Contains(cylinder))
-            cylinders.Add(cylinder);
-    }
-
-
+    // --- HAPTIC THREAD ---
     void OnDeviceStateChanged(object sender, Inverse3EventArgs args)
     {
+        // DEADMAN SWITCH: If the object is deleted, STOP immediately.
+        // This prevents "Zombie" scripts from calculating forces in the background.
+        if (_isDestroyed || this == null) 
+        {
+            return;
+        }
+
         Vector3 pos = args.DeviceController.CursorLocalPosition;
         Vector3 vel = args.DeviceController.CursorLocalVelocity;
         float radius = args.DeviceController.Cursor.Radius;
+        
+        Vector3 totalForce = Vector3.zero;
 
-        //Vector3 totalForce = Vector3.zero;
-        float maxDanger = 0f;
-        string warningMessage = "";
-
-        previous_ms = DateTime.Now.Millisecond;
-
-        Vector3 cubeForce = Vector3.zero;
-        Vector3 sphereForce = Vector3.zero;
-        Vector3 zoneForce = Vector3.zero;
-        Vector3 tubeForce = Vector3.zero;
-        Vector3 movingSphereForce = Vector3.zero;
-        Vector3 planeForce = Vector3.zero;
-        Vector3 triggerForce = Vector3.zero;
-        Vector3 cylinderForce = Vector3.zero;
-
-        const int MAX_FORCE = 3;
-
-        // Need to refactor - calcuations are incorrect
-        //foreach (var cube in cubes)
-        //{
-        //    cubeForce += cube.CalculateForce(pos, vel, radius);
-
-        //    float cubeDanger = cube.NormalizedPenetration();
-        //    if (cubeDanger > maxDanger)
-        //    {
-        //        maxDanger = cubeDanger;
-        //        warningMessage = cube.warningMessage;
-        //    }
-        //}
-
-        foreach (var sphere in spheres)
+        for (int i = 0; i < _cntTubes; i++) totalForce += _bufTubes[i].CalculateForce(pos, vel, radius);
+        for (int i = 0; i < _cntCylinders; i++) totalForce += _bufCylinders[i].CalculateForce(pos, vel, radius);
+        for (int i = 0; i < _cntSpheres; i++) totalForce += _bufSpheres[i].CalculateForce(pos, vel, radius);
+        for (int i = 0; i < _cntCubes; i++) totalForce += _bufCubes[i].CalculateForce(pos, vel, radius);
+        for (int i = 0; i < _cntMoving; i++) totalForce += _bufMoving[i].CalculateForce(pos, vel, radius);
+        for (int i = 0; i < _cntPlanes; i++) totalForce += _bufPlanes[i].CalculateForce(pos, vel, radius);
+        for (int i = 0; i < _cntTriggers; i++) 
         {
-            sphereForce = sphere.CalculateForce(pos, vel, radius);
+            if (_bufTriggers[i].isTouchingCube) totalForce += _bufTriggers[i].CalculateForce(pos, vel, radius);
         }
 
-        foreach (var zone in dangerZones)
-        {
-            float penetration = zone.GetPenetrationDepth(pos, radius);
-            float zoneDanger = zone.NormalizedPenetration();
-            if (zoneDanger > maxDanger)
-            {
-                maxDanger = zoneDanger;
-                warningMessage = zone.warningMessage;
-            }
-        }
-
-        foreach (var tube in curvedTubes)
-        {
-            tubeForce = tube.CalculateForce(pos, vel, radius);
-        }
-
-        foreach (var sphere in movingSpheres)
-        {
-            movingSphereForce = sphere.CalculateForce(pos, vel, radius);
-        }
-
-        foreach (var plane in planes)
-        {
-            planeForce = plane.CalculateForce(pos, vel, radius);
-        }
-
-        foreach (var trigger in curetteTriggers)
-        {
-            if (trigger.isTouchingCube)
-            {
-                triggerForce = trigger.CalculateForce(pos, vel, radius);
-            }
-        }
-
-        foreach (var cylinder in cylinders)
-        {
-            cylinderForce = cylinder.CalculateForce(pos, vel, radius);
-        }
-
-        cubeForce = Vector3.ClampMagnitude(cubeForce, MAX_FORCE);
-        sphereForce = Vector3.ClampMagnitude(sphereForce, MAX_FORCE);
-        zoneForce = Vector3.ClampMagnitude(zoneForce, MAX_FORCE);
-        tubeForce = Vector3.ClampMagnitude(tubeForce, MAX_FORCE);
-        movingSphereForce = Vector3.ClampMagnitude(movingSphereForce, MAX_FORCE / 30); // Higher causes jitter issues
-        planeForce = Vector3.ClampMagnitude(planeForce, MAX_FORCE);
-        triggerForce = Vector3.ClampMagnitude(triggerForce, MAX_FORCE);
-        cylinderForce = Vector3.ClampMagnitude(cylinderForce, MAX_FORCE);
-
-        Vector3 totalForce = cubeForce + sphereForce + zoneForce + tubeForce + movingSphereForce + planeForce + triggerForce + cylinderForce;
-
+        totalForce = Vector3.ClampMagnitude(totalForce, 3.0f);
         args.DeviceController.SetCursorLocalForce(totalForce);
-
-        DangerOverlayUI.SetIntensity(maxDanger, warningMessage);
     }
 }

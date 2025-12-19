@@ -5,6 +5,7 @@ public class SpawnSphereScript : MonoBehaviour
     public GameObject spherePrefab;
     public Transform managerObject;
     public int amountToSpawn = 4;
+    public float spawn_radius = .05f;
 
     void Start()
     {
@@ -14,6 +15,7 @@ public class SpawnSphereScript : MonoBehaviour
     public void Spawner(int amount)
     {
         float radius = managerObject.localScale.x * 0.5f - 0.001f;
+
 
         for (int i = 0; i < amount; i++)
         {
@@ -31,7 +33,8 @@ public class SpawnSphereScript : MonoBehaviour
 
             spawnPos = GetRandomEdgePosition(radius);
             //Vector3 spawnPos = GetRandomPosition(radius);
-            Instantiate(spherePrefab, spawnPos, Quaternion.identity);
+            GameObject new_sphere = Instantiate(spherePrefab, spawnPos, Quaternion.identity);
+            new_sphere.transform.localScale = new Vector3(spawn_radius, spawn_radius, spawn_radius);
         }
     }
 
